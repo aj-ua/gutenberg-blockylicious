@@ -21,7 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class Blockylicious {
-    static function init() {        
+    static function init() {    
+        add_action('enqueue_block_assets', function(){
+            $style_url = plugins_url( 'build/style-index.css', __FILE__ );
+            wp_enqueue_style( 'blockylicious-style', $style_url, [] );
+        });
+
         add_action( 'init', function(){
             add_filter( 'block_categories_all', function($categories){
                 array_unshift($categories, [
@@ -59,6 +64,12 @@ final class Blockylicious {
                 <!-- /wp:blockylicious/clicky-button -->
                 <!-- /wp:blockylicious/clicky-group -->'
             ] );
+
+            $script_url = plugins_url( 'build/index.js', __FILE__ );
+            wp_enqueue_script( 'blockylicious-script', $script_url, ['wp-blocks', 'wp-element', 'wp-editor'] );
+
+            $style_url = plugins_url( 'build/style-index.css', __FILE__ );
+            wp_enqueue_style( 'blockylicious-style', $style_url, [] );
         });
     }
 
