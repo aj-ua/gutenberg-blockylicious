@@ -23,7 +23,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./src/blocks/piccyGallery/block.json");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./editor.scss */ "./src/blocks/piccyGallery/editor.scss");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./editor.scss */ "./src/blocks/piccyGallery/editor.scss");
+/* harmony import */ var _components_imageThumbnail__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/imageThumbnail */ "./src/components/imageThumbnail.js");
+
+
 
 
 
@@ -39,6 +44,16 @@ function Edit(props) {
     allowedBlocks: ["blockylicious/piccy-image"]
   });
   const [editMode, setEditMode] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useState)(true);
+  const innerBlocks = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(select => {
+    const {
+      getBlocksByClientId
+    } = select("core/block-editor");
+    const block = getBlocksByClientId(props.clientId)?.[0];
+    return block?.innerBlocks;
+  }, [props.clientId]);
+
+  // console.log({ innerBlocks });
+
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...blockProps
   }, !!editMode && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -47,7 +62,10 @@ function Edit(props) {
     className: "piccy-label"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Piccy image gallery", _block_json__WEBPACK_IMPORTED_MODULE_4__.textdomain)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...innerBlocksProps
-  })), !editMode && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "preview mode")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.BlockControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
+  })), !editMode && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, innerBlocks.map(innerBlock => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_imageThumbnail__WEBPACK_IMPORTED_MODULE_8__.ImageThumbnail, {
+    key: innerBlock.clientId,
+    imageId: innerBlock.attributes.imageId
+  })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.BlockControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: editMode ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Icon, {
       icon: "welcome-view-site"
     }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Icon, {
@@ -137,6 +155,60 @@ function Save(props) {
 
 /***/ }),
 
+/***/ "./src/components/imageThumbnail.js":
+/*!******************************************!*\
+  !*** ./src/components/imageThumbnail.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ImageThumbnail: () => (/* binding */ ImageThumbnail)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _hooks_useImage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../hooks/useImage */ "./src/hooks/useImage.js");
+
+
+const ImageThumbnail = props => {
+  console.log('props', props);
+  const image = (0,_hooks_useImage__WEBPACK_IMPORTED_MODULE_1__.useImage)(props.imageId);
+  return image?.source_url ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    style: {
+      display: "block",
+      width: "100%",
+      height: 150,
+      objectFit: "cover"
+    },
+    src: image.source_url
+  }) : null;
+};
+
+/***/ }),
+
+/***/ "./src/hooks/useImage.js":
+/*!*******************************!*\
+  !*** ./src/hooks/useImage.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useImage: () => (/* binding */ useImage)
+/* harmony export */ });
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
+
+const useImage = imageId => {
+  const image = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.useSelect)(select => {
+    const data = select("core").getEntityRecord("postType", "attachment", imageId);
+    return data;
+  }, [imageId]);
+  return image;
+};
+
+/***/ }),
+
 /***/ "./src/blocks/piccyGallery/editor.scss":
 /*!*********************************************!*\
   !*** ./src/blocks/piccyGallery/editor.scss ***!
@@ -198,6 +270,16 @@ module.exports = window["wp"]["blocks"];
 /***/ ((module) => {
 
 module.exports = window["wp"]["components"];
+
+/***/ }),
+
+/***/ "@wordpress/data":
+/*!******************************!*\
+  !*** external ["wp","data"] ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["data"];
 
 /***/ }),
 
