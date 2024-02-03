@@ -65,8 +65,8 @@ final class Blockylicious {
                 <!-- /wp:blockylicious/clicky-group -->'
             ] );
 
-            $script_url = plugins_url( 'build/index.js', __FILE__ );
-            wp_enqueue_script( 'blockylicious-script', $script_url, ['wp-blocks', 'wp-element', 'wp-editor'] );
+            // $script_url = plugins_url( 'build/index.js', __FILE__ );
+            // wp_enqueue_script( 'blockylicious-script', $script_url, ['wp-blocks', 'wp-element', 'wp-editor'] );
 
             $style_url = plugins_url( 'build/style-index.css', __FILE__ );
             wp_enqueue_style( 'blockylicious-style', $style_url, [] );
