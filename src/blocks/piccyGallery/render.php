@@ -1,0 +1,13 @@
+<?php 
+$block_wrapper_attributes = get_block_wrapper_attributes();
+?>
+
+<section <?php echo $block_wrapper_attributes; ?>>
+    <div class="gallery-thumbnails">
+        <?php echo $content; ?>
+    </div>
+
+    <div>
+        <img src="" alt="" class="image-preview">
+    </div>
+</section>

@@ -616,16 +616,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const ImageThumbnail = props => {
-  console.log('props', props);
   const image = (0,_hooks_useImage__WEBPACK_IMPORTED_MODULE_1__.useImage)(props.imageId);
   return image?.source_url ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     style: {
       display: "block",
       width: "100%",
-      height: 150,
+      height: props.height || 150,
       objectFit: "cover"
     },
-    src: image.source_url
+    onClick: props.onClick,
+    src: image.source_url,
+    className: props.className
   }) : null;
 };
 

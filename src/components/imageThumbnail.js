@@ -1,7 +1,6 @@
 import { useImage } from "../hooks/useImage";
 
 export const ImageThumbnail = (props) => {
-    console.log('props', props);
     const image = useImage(props.imageId);
 
     return image?.source_url ? (
@@ -9,10 +8,12 @@ export const ImageThumbnail = (props) => {
             style={{
                 display: "block",
                 width: "100%",
-                height: 150,
+                height: props.height || 150,
                 objectFit: "cover"
             }}
+            onClick={props.onClick}
             src={image.source_url}
+            className={props.className}
         />
     ) : null
 }

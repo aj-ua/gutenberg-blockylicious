@@ -1,4 +1,10 @@
 .wp-block-blockylicious-piccy-gallery {
+  .preview-mode {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 10px;
+  }
+
   .edit-mode {
     background-color: #eee;
     box-sizing: border-box;

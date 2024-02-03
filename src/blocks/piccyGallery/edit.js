@@ -20,6 +20,10 @@ export default function Edit(props) {
         const block = getBlocksByClientId(props.clientId)?.[0];
         return block?.innerBlocks;
     }, [props.clientId]);
+    const [previewModeImage, setPreviewModeImage] = useState({
+        imageId: innerBlocks?.[0]?.attributes?.imageId,
+        blockId: innerBlocks?.[0]?.clientId
+    })
 
     // console.log({ innerBlocks });
 
@@ -33,12 +37,27 @@ export default function Edit(props) {
                     </div>
                 }
 
-                {!editMode && <div>{innerBlocks.map(innerBlock =>
-                    <ImageThumbnail
-                        key={innerBlock.clientId}
-                        imageId={innerBlock.attributes.imageId}
-                    />
-                )}</div>}
+                {!editMode &&
+                    <>
+                        <div className="preview-mode">{innerBlocks.map(innerBlock =>
+                            <ImageThumbnail
+                                key={innerBlock.clientId}
+                                imageId={innerBlock.attributes.imageId}
+                                height={75}
+                                onClick={() => {
+                                    setPreviewModeImage({
+                                        imageId: innerBlock.attributes.imageId,
+                                        blockId: innerBlock.clientId
+                                    })
+                                }}
+                                className={`thumb ${innerBlock.clientId === previewModeImage.blockId ? "selected" : ""}`}
+                            />
+                        )}</div>
+                        <div>
+                            <ImageThumbnail imageId={previewModeImage?.imageId} height="initial" />
+                        </div>
+                    </>
+                }
             </div>
             <BlockControls>
                 <ToolbarGroup>
