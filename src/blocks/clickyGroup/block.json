@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "blockylicious/clicky-group",
+	"version": "0.1.0",
+	"title": "Clicky group",
+	"category": "blockylicious",
+	"icon": "smiley",
+	"description": "Group of Clicky buttons that links to a particular post or page rather than hardcoding the destination URL.",
+	"supports": {
+		"html": false,
+		"spacing": {
+			"blockGap": true
+		}
+	},
+	"attributes": {
+		"justifyContent": {
+			"type": "string",
+			"enum": ["left", "center", "right"],
+			"default": "left"
+		}
+	},
+	"textdomain": "blockylicious",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}
